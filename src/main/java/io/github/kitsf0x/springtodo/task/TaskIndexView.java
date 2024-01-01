@@ -22,13 +22,24 @@ public class TaskIndexView extends VerticalLayout {
         this.taskRepository = taskRepository;
 
         grid.setColumns("id", "content", "done");
+
+        grid.addComponentColumn(task -> createEditButton(task.getId()))
+                .setHeader("Edit");
+
         List<Task> tasks = (List<Task>) taskRepository.findAll();
         grid.setItems(tasks);
 
         taskCreateViewRedirectButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        taskCreateViewRedirectButton.addClickListener(event -> UI.getCurrent().navigate(TaskCreateView.class));
+        taskCreateViewRedirectButton.addClickListener(event -> UI.getCurrent().navigate(TaskView.class));
 
         add(grid);
         add(taskCreateViewRedirectButton);
     }
+
+    private Button createEditButton(long taskId) {
+        Button editButton = new Button("Edit");
+        editButton.addClickListener(event -> UI.getCurrent().navigate("task/" + taskId));
+        return editButton;
+    }
 }
+
